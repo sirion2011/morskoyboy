@@ -7,7 +7,7 @@ async def del_text(user_id, list_of_messages, scheduler: AsyncIOScheduler):
         for message in list_of_messages:
             await bot.delete_message(chat_id=user_id, message_id=message.message_id)
     except Exception as e:
-        return scheduler.shutdown(wait=True)
+        scheduler.shutdown(wait=False)
 
 
 async def energy_alert(user_id, scheduler: AsyncIOScheduler):
@@ -15,11 +15,11 @@ async def energy_alert(user_id, scheduler: AsyncIOScheduler):
         await bot.send_message(chat_id=user_id, text=f'Ваша энергия поностью восстановилась,'
                                                      f' самое время бросить вызов Мистер Свин-боту)')
     except Exception as e:
-        return scheduler.shutdown(wait=True)
+        scheduler.shutdown(wait=False)
 
 
 async def ad_deleter(user_id, message_id, scheduler: AsyncIOScheduler):
     try:
         await bot.delete_message(chat_id=user_id, message_id=message_id)
     except Exception as e:
-        return scheduler.shutdown(wait=True)
+        scheduler.shutdown(wait=False)
