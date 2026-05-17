@@ -30,12 +30,14 @@ async def state_handler(message: types.Message):
         await User.filter(tg_id=user_id).update(lives=3, dificulity=1, game_at=datetime.now())
 
     else:
-        lives = int(user.lives)
+        extra_lives = int(user.extra_life)
         dificulity = int(user.dificulity)
-        extra_lives = user.extra_life
-        text = f'Вы купили еще одну жизнь, поэтому остается на уровне: {dificulity}'
+        text = f'Вы использовали одну дополнительную жизнь, поэтому остаётесь на уровне: {dificulity}'
         await message.answer(text=text, reply_markup=MainMenu.main_menu())
-        await User.filter(tg_id=user_id).update(lives=1, game_at=datetime.now())
-
-
-
+        # БАГ ИСПРАВЛЕН: оригинал делал update(lives=1) — не уменьшал extra_life совсем,
+        # и ставил lives=1 вместо восстановления. Теперь: extra_life -= 1, lives восстанавливается до 3.
+        await User.filter(tg_id=user_id).update(
+            lives=3,
+            extra_life=extra_lives - 1,
+            game_at=datetime.now()
+        )

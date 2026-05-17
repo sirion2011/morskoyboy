@@ -6,8 +6,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+MAX_RECURSION_DEPTH = 50
 
-def place(field, longness, tryes, SHEEP:list):
+
+def place(field, longness, tryes, SHEEP: list):
     logger.info(f"Файл: {__file__}, Функция: {inspect.currentframe().f_code.co_name}")
     while True:
         tryes += 1
@@ -37,9 +39,9 @@ def place(field, longness, tryes, SHEEP:list):
                     count += 1
 
             if naprav in ['top', 'bottom']:
-                skok = ship[0]%5
+                skok = ship[0] % 5
                 for i in ship:
-                    if i%5 == skok:
+                    if i % 5 == skok:
                         percent += 1
             else:
                 one, two, three, four, five = 0, 0, 0, 0, 0
@@ -75,36 +77,31 @@ def place(field, longness, tryes, SHEEP:list):
         if tryes == 150:
             return tryes, 0
 
-
     bokovye_prav = []
     bokovye_lev = []
     bokovye_niz = []
     bokovye_vverh = []
     if naprav in ['top', 'bottom']:
         for q in ship:
-            bokovye_prav.append(q+1) if q+1 <= math.ceil(q/5)*5 else -1
-            bokovye_lev.append(q-1) if (q-1 <= math.ceil(q/5)*5 and q%5 != 1) else -1
-        bokovye_niz.append(ship[-1]+5)
-        bokovye_vverh.append(ship[0]-5)
-        bokovye_niz.append(ship[-1]+5+1) if (ship[-1]+5 <= math.ceil((ship[-1]+5)/5)*5 and (ship[-1]+5)%5 != 0) else -1
-        bokovye_niz.append(ship[0]-5+1) if (ship[0]-5 <= math.ceil((ship[0]-5)/5) * 5 and (ship[0]-5)%5 != 0 and (ship[0]-5) != 0) else -1
-
-        bokovye_vverh.append(ship[-1]+5-1) if (ship[-1]+5 <= math.ceil((ship[-1]+5)/5)*5 and (ship[-1]+5)%5 != 1) else -1
-        bokovye_vverh.append(ship[0]-5-1) if (ship[0]-5 <= math.ceil((ship[0]-5)/5)*5 and (ship[0]-5)%5 != 1) else -1
+            bokovye_prav.append(q + 1) if q + 1 <= math.ceil(q / 5) * 5 else -1
+            bokovye_lev.append(q - 1) if (q - 1 <= math.ceil(q / 5) * 5 and q % 5 != 1) else -1
+        bokovye_niz.append(ship[-1] + 5)
+        bokovye_vverh.append(ship[0] - 5)
+        bokovye_niz.append(ship[-1] + 5 + 1) if (ship[-1] + 5 <= math.ceil((ship[-1] + 5) / 5) * 5 and (ship[-1] + 5) % 5 != 0) else -1
+        bokovye_niz.append(ship[0] - 5 + 1) if (ship[0] - 5 <= math.ceil((ship[0] - 5) / 5) * 5 and (ship[0] - 5) % 5 != 0 and (ship[0] - 5) != 0) else -1
+        bokovye_vverh.append(ship[-1] + 5 - 1) if (ship[-1] + 5 <= math.ceil((ship[-1] + 5) / 5) * 5 and (ship[-1] + 5) % 5 != 1) else -1
+        bokovye_vverh.append(ship[0] - 5 - 1) if (ship[0] - 5 <= math.ceil((ship[0] - 5) / 5) * 5 and (ship[0] - 5) % 5 != 1) else -1
 
     elif naprav in ['left', 'right']:
         for q in ship:
-            bokovye_vverh.append(q-5)
-            bokovye_niz.append(q+5)
-
-        bokovye_prav.append(ship[-1]-5+1) if (ship[-1]-5 <= math.ceil((ship[-1]-5)/5) * 5 and (ship[-1]-5)%5 != 0 and (ship[-1]-5) != 0) else -1
-        bokovye_prav.append(ship[-1]+5+1) if (ship[-1]+5 <= math.ceil((ship[-1]+5)/5)*5 and (ship[-1]+5)%5 != 0) else -1
-
-        bokovye_lev.append(ship[0]-5-1) if (ship[0]-5 <= math.ceil((ship[0]-5)/5)*5 and (ship[0]-5)%5 != 1) else -1
-        bokovye_lev.append(ship[0]+5-1) if (ship[0]+5 <= math.ceil((ship[0]+5)/5)*5 and (ship[0]+5)%5 != 1) else -1
-
-        bokovye_lev.append(ship[0]-1) if (ship[0]-1 <= math.ceil(ship[0]/5)*5 and ship[0]%5 != 1) else -1
-        bokovye_prav.append(ship[-1]+1) if ship[-1]+1 <= math.ceil(ship[-1]/5)*5 else -1
+            bokovye_vverh.append(q - 5)
+            bokovye_niz.append(q + 5)
+        bokovye_prav.append(ship[-1] - 5 + 1) if (ship[-1] - 5 <= math.ceil((ship[-1] - 5) / 5) * 5 and (ship[-1] - 5) % 5 != 0 and (ship[-1] - 5) != 0) else -1
+        bokovye_prav.append(ship[-1] + 5 + 1) if (ship[-1] + 5 <= math.ceil((ship[-1] + 5) / 5) * 5 and (ship[-1] + 5) % 5 != 0) else -1
+        bokovye_lev.append(ship[0] - 5 - 1) if (ship[0] - 5 <= math.ceil((ship[0] - 5) / 5) * 5 and (ship[0] - 5) % 5 != 1) else -1
+        bokovye_lev.append(ship[0] + 5 - 1) if (ship[0] + 5 <= math.ceil((ship[0] + 5) / 5) * 5 and (ship[0] + 5) % 5 != 1) else -1
+        bokovye_lev.append(ship[0] - 1) if (ship[0] - 1 <= math.ceil(ship[0] / 5) * 5 and ship[0] % 5 != 1) else -1
+        bokovye_prav.append(ship[-1] + 1) if ship[-1] + 1 <= math.ceil(ship[-1] / 5) * 5 else -1
 
     bokovye = bokovye_lev + bokovye_prav + bokovye_niz + bokovye_vverh
     bokovye = sorted(bokovye)
@@ -119,15 +116,35 @@ def place(field, longness, tryes, SHEEP:list):
     return 0, 1, SHEEP
 
 
-def final_place(field, tryes, ship_count, SHEEP):
+def final_place(field, tryes, ship_count, SHEEP, _depth=0):
     logger.info(f"Файл: {__file__}, Функция: {inspect.currentframe().f_code.co_name}")
+    # БАГ ИСПРАВЛЕН: оригинал вызывал final_place рекурсивно без ограничения глубины.
+    # При неудачной расстановке уходил в бесконечную рекурсию → RecursionError → падение бота.
+    # Добавлен счётчик _depth с лимитом MAX_RECURSION_DEPTH.
+    if _depth >= MAX_RECURSION_DEPTH:
+        logger.error(f"final_place: превышена максимальная глубина рекурсии ({MAX_RECURSION_DEPTH}), сброс")
+        field = {i: str(i) for i in range(1, 26)}
+        SHEEP = []
+        return final_place(field, 0, 0, SHEEP, _depth=0)
+
     for i in range(1, 4)[::-1]:
         longness = i
-        trye, ships, SHEEP = place(field, longness, tryes, SHEEP)
-        ship_count += ships
-        if trye == 150 or (i == 1 and ship_count != 3):
+        result = place(field, longness, tryes, SHEEP)
+        if result[1] == 0:
+            # Расстановка не удалась — сбрасываем и пробуем снова
             tryes = 0
             field = {i: str(i) for i in range(1, 26)}
             ship_count = 0
             SHEEP = []
-            final_place(field, tryes, ship_count, SHEEP)
+            return final_place(field, tryes, ship_count, SHEEP, _depth=_depth + 1)
+        trye, ships, SHEEP = result
+        ship_count += ships
+
+    if ship_count != 3:
+        tryes = 0
+        field = {i: str(i) for i in range(1, 26)}
+        ship_count = 0
+        SHEEP = []
+        return final_place(field, tryes, ship_count, SHEEP, _depth=_depth + 1)
+
+    return field, SHEEP
